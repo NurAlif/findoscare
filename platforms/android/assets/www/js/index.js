@@ -49,3 +49,8 @@ var app = {
 };
 
 app.initialize();
+getgame();
+
+function getgame(){
+    window.location.href = "game.html";
+}

@@ -4,99 +4,41 @@
  * and open the template in the editor.
  */
 
-var master={
-    cvs : document.getElementById("master"),
-    start : function(){
-        this.context = this.cvs.getContext("2d");
-        document.body.insertBefore(this.cvs, document.body.childNodes[0]);
-        this.interval = setInterval(reveal, 20);
-        window.addEventListener('touchmove', function (e) {
-            
-        });
-            
-    },
-    clear : function(){
-        this.context.clearRect(0, 0, this.cvs.width, this.cvs.height);
-    }
-};
+var devwidth = document.documentElement.clientWidth;
+var devheight = document.documentElement.clientHeight;
+var laywidth, layheight;
+var startWidth, startHeight;
+var img = new Image();
 
-function startgame(){
-    deviceinit();
-    gameinit();
-}
-
-var reveal = function(){
-    
-};
-
-var con = true;
-
-var step = 0;
-var count;
-var devwidth,devheight;
-var dispwidth,dispheight;
-var startPosX,startPosY;
-
-var deviceinit = function(){
-    devwidth = document.documentElement.width;
-    devheight = document.documentElement.height;
-    dispwidth = devwidth * 0.82;
-    dispheight = devheight * 0.25;
-    startPosX = (devwidth - dispwidth)/2;
-    startPosY = (devheight - dispheight)/2;
-    count = 2;
-    layout= new Array();
-    layout[layout.length] = new base(getPoint());
-    layout[layout.length] = new base(getPoint());
-};
-
-var layout;
-
-var getPoint = function(){
-    if(layout.length === 0){
-        return (dispwidth);
-    }else{
-        return (layout[layout.length-1].x + dispwidth * (1/3));
-    }
-};
-
-var imgBox = new Image();
-var imgSwad = new Image();
-var imgTarget = new Image();
-imgBox.src = "/img/game/box.png";
-imgSwad.src = "/img/game/shadow.png";
-imgTarget.src = "/img/game/target.png";
-
-var box = function(width,height,x,y){
-    this.width = width;
-    this.height =height;
+var box = function(x,w,h ) {
     this.x = x;
-    this.y = y;
+    this.width = w;
+    this.height = h;
+    this.c = master.canvas;
+    this.ctx = this.c.getContext("2d");
     this.display = function(){
-        var ctx = master.cvs.getContext("2d");
-        ctx.drawImage(imgBox,dispwidth,dispheight);
+        img.src = "js/game/box.png";
+        this.ctx.drawImage(img, this.x, 20, 200, 200);
     };
 };
 
 var boxes = new Array();
 
-var base = function(x,y){
-    this.x = x;
-    this.y = y;
-};
+function startgame() {
+    master.start();
+    boxes[0] = new box();
+    boxes[0].display();
+   
+}
 
-var gameinit = function(){
-    count = 2;
-    boxes[0] = new box(100,100,base[0].x,base[0].y);
-    boxes[1] = new box(100,100,base[1].x,base[1].y);
-};
 
-var game = function(){
-    
-    step = 0;
-    gameinit();
-    
-    while(con === true){
-        
+
+var master = {
+    canvas : document.getElementById("master"),
+    start : function() {
+        this.canvas.width = devwidth;
+        this.canvas.height = devheight;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     }
 };
